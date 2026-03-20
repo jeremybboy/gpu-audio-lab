@@ -1,0 +1,38 @@
+---
+description: Core project context for gpu-audio-lab — environment, conventions, workflow
+alwaysApply: true
+---
+
+# gpu-audio-lab
+
+Research mono-repo for GPU-accelerated audio ML experiments and CUDA quantum work.
+
+## Environment
+
+- Python 3.11.8, venv at `.venv/`
+- PyTorch 2.6+ with CUDA 12.4 (RTX 2070 Super, 8 GB VRAM)
+- torchaudio, librosa, matplotlib, numpy, soundfile
+- Jupyter kernel registered as `gpu-audio-lab`
+- GitHub: `jeremybboy/gpu-audio-lab`
+
+## Repo layout
+
+```
+experiments/         — one numbered folder per experiment (01-cpu-vs-gpu, 02-…)
+shared/              — reusable scripts and utilities across experiments
+requirements.txt     — single shared dependency list
+```
+
+## Workflow
+
+- Each experiment lives in its own `experiments/NN-name/` folder.
+- Prefer Jupyter notebooks for interactive work — pre-execute with nbconvert when sharing.
+- Use feature branches for new experiments; keep `main` in a working state.
+- CPU vs GPU comparisons should always include warmup runs and `torch.cuda.synchronize()`.
+
+## Code style
+
+- Type hints on function signatures.
+- `from __future__ import annotations` at the top of .py files.
+- Match surrounding code conventions when editing existing files.
+- Notebooks: keep cells focused, one concept per cell, with markdown headers between sections.
