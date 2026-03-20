@@ -27,8 +27,19 @@ requirements.txt     — single shared dependency list
 
 - Each experiment lives in its own `experiments/NN-name/` folder.
 - Prefer Jupyter notebooks for interactive work — pre-execute with nbconvert when sharing.
-- Use feature branches for new experiments; keep `main` in a working state.
 - CPU vs GPU comparisons should always include warmup runs and `torch.cuda.synchronize()`.
+
+## Git & branching
+
+- **Never commit directly to `master`** — keep it in a clean, working state.
+- For every new experiment or feature, create a branch first:
+  `git checkout -b experiment/NN-name` (e.g. `experiment/02-placeholder`).
+- Commit early and often on the feature branch with concise messages.
+- When the work is ready, push the branch and open a PR to merge into `master`.
+- Always push after committing — local-only commits are easy to forget.
+- Commit message format: imperative mood, short summary (≤ 72 chars).
+  Example: `Add mel spectrogram benchmark notebook`.
+- Do **not** commit secrets, large binary files, or `.venv/`.
 
 ## Code style
 
