@@ -4,3 +4,5 @@ __pycache__/
 .ipynb_checkpoints/
 output/
 spectrogram.png
+experiments/03-fair-sasrec-vs-classical/ml-1m/
+experiments/03-fair-sasrec-vs-classical/**/*.zip
