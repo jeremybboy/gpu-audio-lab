@@ -1,0 +1,5 @@
+model,train_seconds_mean,train_seconds_std,infer_seconds_mean,infer_seconds_std
+itemknn,17.009769,0.000000,1.910299,0.000000
+bprmf,39.291936,0.000000,9.463981,0.000000
+fmc,74.088317,0.000000,11.273471,0.000000
+sasrec_small,265.542382,0.000000,25.375780,0.000000
