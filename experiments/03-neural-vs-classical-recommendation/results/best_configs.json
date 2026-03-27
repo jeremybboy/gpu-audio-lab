@@ -1,0 +1,33 @@
+{
+  "itemknn": {
+    "topk_neighbors": 400,
+    "context_window": 20,
+    "cooc_window": 10
+  },
+  "bprmf": {
+    "dim": 96,
+    "lr": 0.0005,
+    "weight_decay": 0.0001,
+    "epochs": 30,
+    "batch_size": 2048,
+    "samples_per_epoch": 200000
+  },
+  "fmc": {
+    "dim": 96,
+    "lr": 0.0005,
+    "weight_decay": 0.0001,
+    "epochs": 30,
+    "batch_size": 4096
+  },
+  "sasrec_small": {
+    "dim": 64,
+    "num_heads": 2,
+    "num_layers": 2,
+    "dropout": 0.5,
+    "max_len": 50,
+    "lr": 0.0005,
+    "weight_decay": 1e-06,
+    "epochs": 30,
+    "batch_size": 512
+  }
+}
