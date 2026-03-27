@@ -295,7 +295,7 @@ def aggregate(metric_rows: List[Dict[str, float]], key: str) -> Tuple[float, flo
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fair SASRec vs classical benchmark on MovieLens-1M.")
     parser.add_argument("--data-dir", type=str, required=True, help="Path containing ratings.dat.")
-    parser.add_argument("--results-dir", type=str, default="experiments/03-fair-sasrec-vs-classical/results")
+    parser.add_argument("--results-dir", type=str, default="experiments/03-neural-vs-classical-recommendation/results")
     parser.add_argument("--num-negatives", type=int, default=100)
     parser.add_argument("--max-trials", type=int, default=4)
     parser.add_argument("--patience", type=int, default=4)

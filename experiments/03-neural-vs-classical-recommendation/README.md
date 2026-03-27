@@ -1,4 +1,4 @@
-# 03-fair-sasrec-vs-classical
+# 03-neural-vs-classical-recommendation
 
 Local, fair benchmark of a small SASRec-style sequential recommender against
 strong classical baselines on MovieLens-1M.
@@ -30,25 +30,25 @@ Expected file:
 
 Final expected path:
 
-- `experiments/03-fair-sasrec-vs-classical/ml-1m/ratings.dat`
+- `experiments/03-neural-vs-classical-recommendation/ml-1m/ratings.dat`
 
 ## Run
 
 From repository root:
 
 ```bash
-python experiments/03-fair-sasrec-vs-classical/run_benchmark.py --data-dir experiments/03-fair-sasrec-vs-classical/ml-1m
+python experiments/03-neural-vs-classical-recommendation/run_benchmark.py --data-dir experiments/03-neural-vs-classical-recommendation/ml-1m
 ```
 
 Useful options:
 
 ```bash
-python experiments/03-fair-sasrec-vs-classical/run_benchmark.py --help
+python experiments/03-neural-vs-classical-recommendation/run_benchmark.py --help
 ```
 
 ## Outputs
 
-Written under `experiments/03-fair-sasrec-vs-classical/results/`:
+Written under `experiments/03-neural-vs-classical-recommendation/results/`:
 
 - `metrics_summary.csv`
 - `best_configs.json`
