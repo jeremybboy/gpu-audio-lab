@@ -6,3 +6,5 @@ output/
 spectrogram.png
 experiments/03-neural-vs-classical-recommendation/ml-1m/
 experiments/03-neural-vs-classical-recommendation/**/*.zip
+experiments/03-fair-sasrec-vs-classical/ml-1m/
+experiments/03-fair-sasrec-vs-classical/**/*.zip
