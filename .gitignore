@@ -11,3 +11,5 @@ experiments/03-fair-sasrec-vs-classical/**/*.zip
 experiments/04-audio-to-pro800-patch/presets/*.syx
 experiments/04-audio-to-pro800-patch/presets/*.cc.json
 experiments/04-audio-to-pro800-patch/tmp/
+experiments/04-audio-to-pro800-patch/calibration_runs/**/*.syx
+experiments/04-audio-to-pro800-patch/corpus/_index/

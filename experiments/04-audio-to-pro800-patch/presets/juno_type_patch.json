@@ -1,0 +1,24 @@
+{
+  "name": "juno_type",
+  "params_0_127": {
+    "osc1_level": 120,
+    "osc2_level": 112,
+    "noise_level": 3,
+    "osc_detune": 16,
+    "osc_mix_bias": 64,
+    "filter_cutoff": 92,
+    "filter_resonance": 26,
+    "filter_env_amount": 48,
+    "amp_attack": 24,
+    "amp_decay": 56,
+    "amp_sustain": 94,
+    "amp_release": 54,
+    "filter_attack": 14,
+    "filter_decay": 58,
+    "filter_sustain": 64,
+    "filter_release": 50,
+    "lfo_rate": 15,
+    "lfo_depth": 14,
+    "poly_mod_amount": 9
+  }
+}

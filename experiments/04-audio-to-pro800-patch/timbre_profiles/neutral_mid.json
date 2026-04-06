@@ -1,0 +1,8 @@
+{
+  "name": "neutral_mid",
+  "spectral_centroid_mean": 2200.0,
+  "spectral_rolloff_mean": 5000.0,
+  "attack_time_s": 0.02,
+  "harmonic_to_noise_ratio": 18.0,
+  "vibrato_rate_hz": 0.0
+}

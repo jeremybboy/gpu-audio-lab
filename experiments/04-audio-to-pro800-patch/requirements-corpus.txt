@@ -1,0 +1,5 @@
+# Optional: open-text preset retrieval (corpus embedding + PCA viz).
+# pip install -r requirements-corpus.txt
+sentence-transformers>=2.6.0
+scikit-learn>=1.3.0
+joblib>=1.3.0

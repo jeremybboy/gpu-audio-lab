@@ -1,0 +1,24 @@
+{
+  "name": "bass_basic",
+  "params_0_127": {
+    "osc1_level": 118,
+    "osc2_level": 100,
+    "noise_level": 4,
+    "osc_detune": 10,
+    "osc_mix_bias": 58,
+    "filter_cutoff": 48,
+    "filter_resonance": 24,
+    "filter_env_amount": 36,
+    "amp_attack": 6,
+    "amp_decay": 74,
+    "amp_sustain": 84,
+    "amp_release": 36,
+    "filter_attack": 5,
+    "filter_decay": 56,
+    "filter_sustain": 50,
+    "filter_release": 34,
+    "lfo_rate": 6,
+    "lfo_depth": 3,
+    "poly_mod_amount": 8
+  }
+}

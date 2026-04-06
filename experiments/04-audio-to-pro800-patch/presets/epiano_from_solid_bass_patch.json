@@ -1,0 +1,24 @@
+{
+  "name": "epiano_from_solid_bass",
+  "params_0_127": {
+    "osc1_level": 120,
+    "osc2_level": 102,
+    "noise_level": 5,
+    "osc_detune": 12,
+    "osc_mix_bias": 68,
+    "filter_cutoff": 110,
+    "filter_resonance": 20,
+    "filter_env_amount": 78,
+    "amp_attack": 5,
+    "amp_decay": 58,
+    "amp_sustain": 76,
+    "amp_release": 44,
+    "filter_attack": 6,
+    "filter_decay": 46,
+    "filter_sustain": 34,
+    "filter_release": 40,
+    "lfo_rate": 10,
+    "lfo_depth": 5,
+    "poly_mod_amount": 8
+  }
+}

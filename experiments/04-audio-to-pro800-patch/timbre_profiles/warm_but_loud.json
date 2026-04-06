@@ -1,0 +1,8 @@
+{
+  "name": "warm_but_loud",
+  "spectral_centroid_mean": 1800.0,
+  "spectral_rolloff_mean": 4500.0,
+  "attack_time_s": 0.015,
+  "harmonic_to_noise_ratio": 22.0,
+  "vibrato_rate_hz": 0.0
+}

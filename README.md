@@ -1,6 +1,8 @@
 # gpu-audio-lab
 
-Research mono-repo for GPU-accelerated audio ML experiments, benchmarks, and CUDA quantum work.
+Personal research **mono-repo** for **GPU-accelerated audio / ML** work: small benchmarks, notebooks, and self-contained **experiments** (each in `experiments/NN-name/`). The focus is reproducible scripts, fair comparisons (warmup, `torch.cuda.synchronize()` where relevant), and clear write-ups—not a single application.
+
+Topics covered here include **PyTorch + CUDA** audio workloads, **classical vs neural** recommendation baselines, and **inverse sound design** (timbre → synthesizer patch) for hardware like the **Behringer PRO-800**.
 
 ## Experiments
 
@@ -8,8 +10,9 @@ Research mono-repo for GPU-accelerated audio ML experiments, benchmarks, and CUD
 |---|--------|-------------|
 | 01 | `experiments/01-cpu-vs-gpu/` | CPU vs GPU benchmarks — matrix multiply, mel spectrogram, conv net forward pass |
 | 01 | `experiments/01-audio-exploration/` | Audio fundamentals — waveform, spectrogram, mel, MFCCs (E minor scale demo) |
-| 03 | `experiments/03-neural-vs-classical-recommendation/` | Fair benchmark of SASRec-style neural recommendation vs classical baselines |
-| 04 | `experiments/04-audio-to-pro800-patch/` | Inverse sound design: audio/timbre to PRO-800 patch parameters and export |
+| 03 | `experiments/03-neural-vs-classical-recommendation/` | MovieLens-1M: SASRec-style neural recommender vs ItemKNN, BPR-MF, FMC |
+| 03-fair | `experiments/03-fair-sasrec-vs-classical/` | Extended fair runs and metrics for neural vs classical recommendation |
+| 04 | `experiments/04-audio-to-pro800-patch/` | **Timbre / audio → abstract patch → Behringer PRO-800** (JSON, MIDI CC, template-based `.syx`, text intents, local web UI). Repo **`docs/`** holds a static UI for **GitHub Pages** (preview); full export needs **`python app.py`**. See experiment README. |
 
 ## Highlights from 01-cpu-vs-gpu
 

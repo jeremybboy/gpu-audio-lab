@@ -5,7 +5,9 @@ from __future__ import annotations
 Decoded byte offsets follow the community table:
 https://github.com/samstaton/pro800/blob/main/pro800syx.md
 
-Continuous 0..127 parameters are scaled to 0..16383 and stored little-endian uint16.
+Continuous 0..127 parameters are stored as little-endian uint16. Firmware 0x6F often uses
+the **full 0..65535** range in templates (e.g. osc levels 0xFFFF); mapping only to 0..16383
+collapses those values and can silence the patch — see apply path below.
 """
 
 from pathlib import Path
@@ -45,52 +47,83 @@ def _u16_le_write(buf: bytearray, offset: int, value: int) -> None:
 
 
 def _midi127_from_u16_le(buf: bytes, offset: int) -> int:
-    """Inverse of _u16_le_from_midi127 (same 0..16383 scale as writes)."""
+    """Inverse of _u16_le_from_midi127 (0..16383 wire range — legacy / tweak-syx)."""
     if offset + 1 >= len(buf):
         return 64
     x = _u16_le_read(buf, offset)
-    # Hardware often stores values >16383 in the pair; clamp to the same range we
-    # use when writing from MIDI 0..127 so round-trip stays consistent.
     x = min(16383, x)
     return min(127, max(0, int(round(x / 16383.0 * 127.0))))
 
 
-def apply_pro800_patch_to_decoded(decoded: bytearray, patch: Pro800Patch) -> None:
+def _u16_le_from_midi127_hw(buf: bytearray, offset: int, value: int) -> None:
+    """Map MIDI 0..127 to uint16 0..65535 (matches typical 0x6F preset span)."""
+    if offset + 1 >= len(buf):
+        return
+    v = max(0, min(127, int(value)))
+    x = int(round(v / 127.0 * 65535.0)) & 0xFFFF
+    buf[offset] = x & 0xFF
+    buf[offset + 1] = (x >> 8) & 0xFF
+
+
+def _midi127_from_u16_le_hw(buf: bytes, offset: int) -> int:
+    """Template read for blend: invert _u16_le_from_midi127_hw."""
+    if offset + 1 >= len(buf):
+        return 64
+    x = min(65535, _u16_le_read(buf, offset))
+    return min(127, max(0, int(round(x / 65535.0 * 127.0))))
+
+
+def apply_pro800_patch_to_decoded(
+    decoded: bytearray,
+    patch: Pro800Patch,
+    *,
+    overlay: str = "blend_max",
+) -> None:
     """Overlay mapped parameters; leaves unlisted bytes (e.g. name) unchanged.
 
-    Blends each written field with the template snapshot using max(mapped, template).
-    That keeps audibility when the timbre map would land below a working preset's
-    oscillator levels or sustain. Skips poly_mod (offset 43) until that offset is
-    verified — it previously risked killing the voice.
+    *overlay* ``blend_max``: per field, MIDI value is max(mapped, template, floor).
+    Use for timbre-driven exports so template levels are not crushed.
+
+    *overlay* ``patch_only``: write mapped MIDI only (with floors); use when morphing
+    from a known template (e.g. bass → e-piano) so resonance/cutoff can go **down**
+    as well as up. Writes use 0..65535 uint16 span (0x6F presets).
+
+    Skips poly_mod (offset 43) until verified.
     """
+    if overlay not in ("blend_max", "patch_only"):
+        raise ValueError(f"unknown overlay mode: {overlay!r}")
     p = patch.params_0_127
     snap = bytes(decoded)
 
-    def blend(key: str, off: int, floor: int = 0) -> int:
-        return max(int(p[key]), _midi127_from_u16_le(snap, off), floor)
+    def midi_for(key: str, off: int, floor: int = 0) -> int:
+        v = max(0, min(127, int(p[key])))
+        if overlay == "patch_only":
+            return max(floor, v)
+        tmpl = _midi127_from_u16_le_hw(snap, off)
+        return max(v, tmpl, floor)
 
-    _u16_le_from_midi127(decoded, 19, blend("filter_cutoff", 19, 28))
-    _u16_le_from_midi127(decoded, 21, blend("filter_resonance", 21))
-    _u16_le_from_midi127(decoded, 23, blend("filter_env_amount", 23))
-    _u16_le_from_midi127(decoded, 25, blend("filter_release", 25))
-    _u16_le_from_midi127(decoded, 27, blend("filter_sustain", 27))
-    _u16_le_from_midi127(decoded, 29, blend("filter_decay", 29))
-    _u16_le_from_midi127(decoded, 31, blend("filter_attack", 31))
-    _u16_le_from_midi127(decoded, 33, blend("amp_release", 33))
-    _u16_le_from_midi127(decoded, 35, blend("amp_sustain", 35, 48))
-    _u16_le_from_midi127(decoded, 37, blend("amp_decay", 37))
-    _u16_le_from_midi127(decoded, 39, blend("amp_attack", 39))
+    _u16_le_from_midi127_hw(decoded, 19, midi_for("filter_cutoff", 19, 28))
+    _u16_le_from_midi127_hw(decoded, 21, midi_for("filter_resonance", 21))
+    _u16_le_from_midi127_hw(decoded, 23, midi_for("filter_env_amount", 23))
+    _u16_le_from_midi127_hw(decoded, 25, midi_for("filter_release", 25))
+    _u16_le_from_midi127_hw(decoded, 27, midi_for("filter_sustain", 27))
+    _u16_le_from_midi127_hw(decoded, 29, midi_for("filter_decay", 29))
+    _u16_le_from_midi127_hw(decoded, 31, midi_for("filter_attack", 31))
+    _u16_le_from_midi127_hw(decoded, 33, midi_for("amp_release", 33))
+    _u16_le_from_midi127_hw(decoded, 35, midi_for("amp_sustain", 35, 48))
+    _u16_le_from_midi127_hw(decoded, 37, midi_for("amp_decay", 37))
+    _u16_le_from_midi127_hw(decoded, 39, midi_for("amp_attack", 39))
 
     if len(decoded) > 48:
-        _u16_le_from_midi127(decoded, 45, blend("lfo_rate", 45))
-        _u16_le_from_midi127(decoded, 47, blend("lfo_depth", 47))
+        _u16_le_from_midi127_hw(decoded, 45, midi_for("lfo_rate", 45))
+        _u16_le_from_midi127_hw(decoded, 47, midi_for("lfo_depth", 47))
     if len(decoded) > 14:
-        _u16_le_from_midi127(decoded, 7, blend("osc1_level", 7, 52))
-        _u16_le_from_midi127(decoded, 13, blend("osc2_level", 13, 52))
+        _u16_le_from_midi127_hw(decoded, 7, midi_for("osc1_level", 7, 52))
+        _u16_le_from_midi127_hw(decoded, 13, midi_for("osc2_level", 13, 52))
     if len(decoded) > 83:
-        _u16_le_from_midi127(decoded, 82, blend("osc_detune", 82))
+        _u16_le_from_midi127_hw(decoded, 82, midi_for("osc_detune", 82))
     if len(decoded) > 143:
-        _u16_le_from_midi127(decoded, 142, blend("noise_level", 142))
+        _u16_le_from_midi127_hw(decoded, 142, midi_for("noise_level", 142))
 
 
 def build_syx_from_template_tweak(
@@ -144,6 +177,8 @@ def build_single_preset_syx(
     patch: Pro800Patch,
     template_path: Path,
     preset_index: int,
+    *,
+    overlay: str = "blend_max",
 ) -> bytes:
     """Clone wire layout from *template_path*, apply *patch*, set program index."""
     packets = parse_pro800_dump(template_path)
@@ -157,7 +192,7 @@ def build_single_preset_syx(
             f"Template decoded length {len(dec)} is not a multiple of 7; choose another export"
         )
     buf = bytearray(dec)
-    apply_pro800_patch_to_decoded(buf, patch)
+    apply_pro800_patch_to_decoded(buf, patch, overlay=overlay)
     new_wire = pack_pro800_7bit_payload(bytes(buf)) + rem
     return (
         bytes([0xF0])
