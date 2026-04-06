@@ -8,6 +8,8 @@ Research mono-repo for GPU-accelerated audio ML experiments, benchmarks, and CUD
 |---|--------|-------------|
 | 01 | `experiments/01-cpu-vs-gpu/` | CPU vs GPU benchmarks — matrix multiply, mel spectrogram, conv net forward pass |
 | 01 | `experiments/01-audio-exploration/` | Audio fundamentals — waveform, spectrogram, mel, MFCCs (E minor scale demo) |
+| 03 | `experiments/03-neural-vs-classical-recommendation/` | Fair benchmark of SASRec-style neural recommendation vs classical baselines |
+| 04 | `experiments/04-audio-to-pro800-patch/` | Inverse sound design: audio/timbre to PRO-800 patch parameters and export |
 
 ## Highlights from 01-cpu-vs-gpu
 

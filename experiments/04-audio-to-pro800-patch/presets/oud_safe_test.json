@@ -1,0 +1,24 @@
+{
+  "name": "oud_safe_test",
+  "params_0_127": {
+    "osc1_level": 88,
+    "osc2_level": 95,
+    "noise_level": 40,
+    "osc_detune": 39,
+    "osc_mix_bias": 53,
+    "filter_cutoff": 45,
+    "filter_resonance": 58,
+    "filter_env_amount": 31,
+    "amp_attack": 14,
+    "amp_decay": 91,
+    "amp_sustain": 68,
+    "amp_release": 43,
+    "filter_attack": 10,
+    "filter_decay": 84,
+    "filter_sustain": 53,
+    "filter_release": 36,
+    "lfo_rate": 46,
+    "lfo_depth": 33,
+    "poly_mod_amount": 28
+  }
+}

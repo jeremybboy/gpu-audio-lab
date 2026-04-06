@@ -1,0 +1,9 @@
+{
+  "name": "qanun_reference",
+  "spectral_centroid_mean": 2450.0,
+  "spectral_rolloff_mean": 5600.0,
+  "attack_time_s": 0.012,
+  "harmonic_to_noise_ratio": 15.2,
+  "vibrato_rate_hz": 3.0
+}
+

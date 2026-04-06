@@ -1,0 +1,9 @@
+{
+  "name": "ney_reference",
+  "spectral_centroid_mean": 980.0,
+  "spectral_rolloff_mean": 2500.0,
+  "attack_time_s": 0.08,
+  "harmonic_to_noise_ratio": 6.5,
+  "vibrato_rate_hz": 5.0
+}
+
