@@ -6,6 +6,8 @@ output/
 spectrogram.png
 experiments/03-neural-vs-classical-recommendation/ml-1m/
 experiments/03-neural-vs-classical-recommendation/**/*.zip
+experiments/03-fair-sasrec-vs-classical/ml-1m/
+experiments/03-fair-sasrec-vs-classical/**/*.zip
 experiments/04-audio-to-pro800-patch/presets/*.syx
 experiments/04-audio-to-pro800-patch/presets/*.cc.json
 experiments/04-audio-to-pro800-patch/tmp/
