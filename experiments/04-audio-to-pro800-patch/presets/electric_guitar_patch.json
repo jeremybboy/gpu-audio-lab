@@ -1,0 +1,24 @@
+{
+  "name": "electric_guitar",
+  "params_0_127": {
+    "osc1_level": 122,
+    "osc2_level": 96,
+    "noise_level": 6,
+    "osc_detune": 14,
+    "osc_mix_bias": 62,
+    "filter_cutoff": 88,
+    "filter_resonance": 30,
+    "filter_env_amount": 68,
+    "amp_attack": 4,
+    "amp_decay": 52,
+    "amp_sustain": 58,
+    "amp_release": 48,
+    "filter_attack": 4,
+    "filter_decay": 42,
+    "filter_sustain": 32,
+    "filter_release": 44,
+    "lfo_rate": 9,
+    "lfo_depth": 4,
+    "poly_mod_amount": 10
+  }
+}

@@ -52,10 +52,27 @@ Build an explainable pipeline that converts an input audio sample or timbre prof
 - Input: PRO-800 mapped params + format (`json|cc|syx`).
   - For `syx`, optional `syx_template`: basename of a file under `presets/` (single-preset SynthTribe export to clone layout).
   - Optional `preset_index` (int): SysEx program index byte; default = template’s index.
+  - Optional `syx_overlay`: `blend_max` | `patch_only` (default `blend_max`).
 - Output:
   - `json`: structured patch payload
   - `cc`: ordered CC stream payload
   - `syx`: hardware-style single-preset SysEx when `syx_template` resolves; otherwise legacy placeholder bytes
+
+### `POST /api/export_sound`
+
+- Input: JSON `{ "describe": "<phrase>", "syx_template": "<basename>", "name"?: str, "preset_index"?: int, "registry"?: path }`.
+- Resolves phrase via `sound_intents/registry.json`, loads recipe patch JSON, exports `.syx` with the recipe’s `syx_overlay`.
+- Output: `send_file` attachment (`.syx`).
+
+### `POST /api/export_from_profile`
+
+- Input: JSON `{ "profile": { ...timbre fields... }, "syx_template": "<basename>", "name"?: str, "syx_overlay"?: "blend_max"|"patch_only", "preset_index"?: int }`.
+- Chains analyze → map → SysEx export in one request.
+- Output: `send_file` attachment (`.syx`).
+
+### `GET /`, `GET /style.css`, `GET /app.js`
+
+- Serves the minimal web UI from the **repo root** `docs/` folder (same files deployed to **GitHub Pages** for static preview).
 
 ### `POST /api/sysex/send`
 

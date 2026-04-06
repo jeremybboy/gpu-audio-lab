@@ -1,0 +1,8 @@
+{
+  "name": "test_guitar_pluck",
+  "spectral_centroid_mean": 2600.0,
+  "spectral_rolloff_mean": 5500.0,
+  "attack_time_s": 0.006,
+  "harmonic_to_noise_ratio": 18.0,
+  "vibrato_rate_hz": 2.0
+}

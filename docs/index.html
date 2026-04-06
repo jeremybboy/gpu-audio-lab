@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PRO-800 patch export (gpu-audio-lab)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Behringer PRO-800 — patch export</h1>
+    <p class="hint">
+      <a href="/corpus.html">Open prompt → embedding map &amp; corpus .syx</a> (local API + built index).
+    </p>
+
+    <div id="banner-pages" class="banner pages" hidden>
+      <strong>GitHub Pages (static only).</strong> This page shows the UI layout; it
+      <strong>cannot</strong> run the Python API. To download a real <code>.syx</code> file:
+      clone the repo, create a venv, install deps, run
+      <code>python experiments/04-audio-to-pro800-patch/app.py</code>, then open
+      <a href="http://127.0.0.1:5055/">http://127.0.0.1:5055/</a> in your browser.
+      Browsers usually block calling your PC from <code>github.io</code>.
+    </div>
+
+    <div id="banner-local" class="banner" hidden>
+      <strong>Local API.</strong> If <code>python app.py</code> is running, use the forms
+      below to download <code>.syx</code> for SynthTribe. Put a real single-preset template
+      under <code>experiments/04-audio-to-pro800-patch/presets/</code> (e.g.
+      <code>28 solid bass.syx</code>).
+    </div>
+
+    <section>
+      <h2>Describe sound → download <code>.syx</code></h2>
+      <p class="hint">
+        Uses <code>sound_intents/registry.json</code> (e.g. electric piano, acid bass, juno).
+      </p>
+      <label for="describe">Describe sound</label>
+      <input
+        id="describe"
+        type="text"
+        placeholder='e.g. electric piano, acid bass v2, juno'
+        autocomplete="off"
+      />
+      <label for="template">Template file (basename in <code>presets/</code>)</label>
+      <input id="template" type="text" value="28 solid bass.syx" />
+      <label for="out-name">Output name (without .syx)</label>
+      <input id="out-name" type="text" value="sound_export" />
+      <button type="button" id="btn-describe">Download .syx</button>
+      <div id="err-describe" class="err"></div>
+      <div id="ok-describe" class="ok"></div>
+    </section>
+
+    <section>
+      <h2>Timbre profile JSON → download <code>.syx</code></h2>
+      <p class="hint">
+        One-shot: spectral features → map → SysEx. Default overlay is
+        <code>blend_max</code> (choose below).
+      </p>
+      <label for="profile-json">Profile JSON</label>
+      <textarea id="profile-json" placeholder='{ "spectral_centroid_mean": 3200, ... }'></textarea>
+      <label for="template-profile">Template (basename in presets/)</label>
+      <input id="template-profile" type="text" value="28 solid bass.syx" />
+      <label for="out-name-profile">Output name</label>
+      <input id="out-name-profile" type="text" value="from_profile" />
+      <label for="syx-overlay">Syx overlay</label>
+      <select id="syx-overlay">
+        <option value="blend_max" selected>blend_max</option>
+        <option value="patch_only">patch_only</option>
+      </select>
+      <button type="button" class="secondary" id="btn-profile">Download .syx (profile)</button>
+      <div id="err-profile" class="err"></div>
+      <div id="ok-profile" class="ok"></div>
+    </section>
+
+    <p class="hint">
+      Repo:
+      <a href="https://github.com/jeremybboy/gpu-audio-lab">github.com/jeremybboy/gpu-audio-lab</a>
+      — enable <strong>Settings → Pages → Branch /docs</strong> for this UI at
+      <code>https://jeremybboy.github.io/gpu-audio-lab/</code> (preview only; API local).
+    </p>
+
+    <script src="app.js"></script>
+  </body>
+</html>

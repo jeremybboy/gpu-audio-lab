@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PRO-800 — open prompt preset map (gpu-audio-lab)</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+    <style>
+      body.corpus-page {
+        max-width: 52rem;
+      }
+      #plot {
+        width: 100%;
+        height: 420px;
+        margin-top: 0.75rem;
+      }
+      #matches {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0 0;
+      }
+      #matches li {
+        cursor: pointer;
+        padding: 0.35rem 0.5rem;
+        border-radius: 4px;
+        margin-bottom: 0.25rem;
+        border: 1px solid #2a2f3a;
+        font-size: 0.85rem;
+      }
+      #matches li:hover {
+        background: #1f232c;
+      }
+      #matches li.selected {
+        border-color: #4c6ef5;
+        background: #1a1f33;
+      }
+    </style>
+  </head>
+  <body class="corpus-page">
+    <h1>Open prompt → preset neighbors (PCA map)</h1>
+    <p class="hint">
+      <a href="/">← Registry / profile export</a>
+      — embeddings over the seeded corpus; families are organizational tags, not acoustic guarantees.
+    </p>
+
+    <div id="banner-pages" class="banner pages" hidden>
+      <strong>GitHub Pages (static only).</strong> This map needs the local Flask API and a built index.
+      Run <code>python experiments/04-audio-to-pro800-patch/app.py</code> and open
+      <a href="http://127.0.0.1:5055/corpus.html">http://127.0.0.1:5055/corpus.html</a>.
+    </div>
+    <div id="banner-local" class="banner" hidden>
+      <strong>Local API.</strong> If the index is missing, run
+      <code>python corpus/build_index.py</code> from the experiment folder (after installing
+      <code>requirements-corpus.txt</code>). Place <code>28 solid bass.syx</code> (or your template) under
+      <code>presets/</code> for real SysEx.
+    </div>
+
+    <section>
+      <h2>Prompt</h2>
+      <label for="prompt">Describe a sound (any text)</label>
+      <input
+        id="prompt"
+        type="text"
+        placeholder="e.g. squelchy resonant mono bass line"
+        autocomplete="off"
+      />
+      <label for="k">Top-k neighbors</label>
+      <input id="k" type="number" min="1" max="50" value="8" />
+      <label for="template-corpus">Template (basename in presets/, optional override)</label>
+      <input id="template-corpus" type="text" placeholder="default from corpus row" />
+      <label for="out-corpus">Download filename base (no .syx)</label>
+      <input id="out-corpus" type="text" value="corpus_export" />
+      <button type="button" id="btn-match">Match &amp; update map</button>
+      <button type="button" class="secondary" id="btn-dl-best">Download best match</button>
+      <button type="button" class="secondary" id="btn-dl-sel" disabled>Download selected</button>
+      <div id="err-corpus" class="err"></div>
+      <div id="ok-corpus" class="ok"></div>
+    </section>
+
+    <section>
+      <h2>Preset galaxy (PCA 2D)</h2>
+      <p class="hint">
+        Query position uses the same PCA as presets (sentence-transformers embedding → project). Click a
+        neighbor to select it for download.
+      </p>
+      <div id="plot"></div>
+      <h3 style="font-size: 1rem; margin-top: 1rem">Top matches</h3>
+      <ul id="matches"></ul>
+    </section>
+
+    <script>
+      (function () {
+        const PALETTE = [
+          "#636efa",
+          "#EF553B",
+          "#00cc96",
+          "#ab63fa",
+          "#FFA15A",
+          "#19d3f3",
+          "#FF6692",
+          "#B6E880",
+          "#FF97FF",
+          "#FECB52",
+        ];
+
+        const el = (id) => document.getElementById(id);
+        const err = el("err-corpus");
+        const ok = el("ok-corpus");
+        const matchesUl = el("matches");
+        let lastMatch = null;
+        let selectedId = null;
+        let familyColor = {};
+
+        function showBanner() {
+          const host = location.hostname || "";
+          const pages = host.endsWith("github.io");
+          const bPages = el("banner-pages");
+          const bLocal = el("banner-local");
+          if (pages) {
+            bPages.hidden = false;
+          } else {
+            bLocal.hidden = false;
+          }
+        }
+
+        function setErr(msg) {
+          err.textContent = msg || "";
+          ok.textContent = "";
+        }
+        function setOk(msg) {
+          ok.textContent = msg || "";
+          err.textContent = "";
+        }
+
+        function layout() {
+          const gd = document.getElementById("plot");
+          if (gd && gd.data) {
+            Plotly.Plots.resize("plot");
+          }
+        }
+        window.addEventListener("resize", layout);
+
+        async function loadViz() {
+          setErr("");
+          const res = await fetch("/api/corpus/viz");
+          if (!res.ok) {
+            const j = await res.json().catch(() => ({}));
+            setErr(j.error || "Failed to load corpus viz (HTTP " + res.status + ")");
+            return null;
+          }
+          return res.json();
+        }
+
+        function drawBase(viz) {
+          const pts = viz.points;
+          const fams = viz.families;
+          fams.forEach((f, i) => {
+            familyColor[f] = PALETTE[i % PALETTE.length];
+          });
+          const colors = pts.map((p) => familyColor[p.family] || "#888");
+          const text = pts.map((p) => p.label + "<br>" + p.family + "<br>" + p.id);
+          const baseTrace = {
+            x: pts.map((p) => p.x),
+            y: pts.map((p) => p.y),
+            mode: "markers",
+            type: "scatter",
+            marker: { size: 8, color: colors, line: { width: 0.5, color: "#222" } },
+            text,
+            hoverinfo: "text",
+            name: "presets",
+          };
+          const emptyOverlay = {
+            x: [],
+            y: [],
+            mode: "markers",
+            type: "scatter",
+            name: "query",
+            marker: {
+              symbol: "star",
+              size: 16,
+              color: "#ffe066",
+              line: { width: 1, color: "#fff" },
+            },
+          };
+          const neighborTrace = {
+            x: [],
+            y: [],
+            mode: "markers",
+            type: "scatter",
+            name: "neighbors",
+            marker: {
+              size: 14,
+              color: "rgba(255,255,255,0.15)",
+              line: { width: 2, color: "#74b9ff" },
+            },
+          };
+          Plotly.newPlot(
+            "plot",
+            [baseTrace, neighborTrace, emptyOverlay],
+            {
+              paper_bgcolor: "#121418",
+              plot_bgcolor: "#121418",
+              font: { color: "#e8eaed" },
+              margin: { l: 50, r: 20, t: 20, b: 50 },
+              xaxis: { title: "PC1", gridcolor: "#2a2f3a", zeroline: false },
+              yaxis: { title: "PC2", gridcolor: "#2a2f3a", zeroline: false },
+              showlegend: true,
+              legend: { orientation: "h" },
+            },
+            { responsive: true, displayModeBar: true }
+          );
+        }
+
+        function updateMatchOverlay(data) {
+          if (!document.getElementById("plot").data) return;
+          const nx = data.matches.map((m) => m.x);
+          const ny = data.matches.map((m) => m.y);
+          const qx = [data.query_xy.x];
+          const qy = [data.query_xy.y];
+          Plotly.restyle("plot", { x: [nx], y: [ny] }, [1]);
+          Plotly.restyle("plot", { x: [qx], y: [qy] }, [2]);
+        }
+
+        function renderMatches(data) {
+          matchesUl.innerHTML = "";
+          selectedId = null;
+          el("btn-dl-sel").disabled = true;
+          data.matches.forEach((m, idx) => {
+            const li = document.createElement("li");
+            li.dataset.id = m.id;
+            li.textContent =
+              (idx + 1) +
+              ". " +
+              m.label +
+              " — " +
+              m.family +
+              " (score " +
+              m.score.toFixed(3) +
+              ")";
+            li.addEventListener("click", () => {
+              selectedId = m.id;
+              [...matchesUl.children].forEach((c) => c.classList.remove("selected"));
+              li.classList.add("selected");
+              el("btn-dl-sel").disabled = false;
+            });
+            matchesUl.appendChild(li);
+          });
+        }
+
+        async function doMatch() {
+          setErr("");
+          const q = el("prompt").value.trim();
+          if (!q) {
+            setErr("Enter a prompt.");
+            return;
+          }
+          const k = parseInt(el("k").value, 10) || 8;
+          const res = await fetch("/api/corpus/match", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query: q, k }),
+          });
+          if (!res.ok) {
+            const j = await res.json().catch(() => ({}));
+            setErr(j.error || "Match failed (" + res.status + ")");
+            return;
+          }
+          lastMatch = await res.json();
+          updateMatchOverlay(lastMatch);
+          renderMatches(lastMatch);
+          setOk("Matched " + lastMatch.matches.length + " neighbors.");
+        }
+
+        function templateBody() {
+          const t = el("template-corpus").value.trim();
+          const o = {};
+          if (t) o.syx_template = t;
+          return o;
+        }
+
+        async function downloadExport(body) {
+          setErr("");
+          const res = await fetch("/api/corpus/export", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ...body,
+              ...templateBody(),
+              name: el("out-corpus").value.trim() || "corpus_export",
+            }),
+          });
+          if (!res.ok) {
+            const t = await res.text();
+            try {
+              const j = JSON.parse(t);
+              setErr(j.error || t);
+            } catch {
+              setErr(t || "Export failed");
+            }
+            return;
+          }
+          const blob = await res.blob();
+          const cd = res.headers.get("Content-Disposition") || "";
+          let fn = "export.syx";
+          const m = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(cd);
+          if (m && m[1]) fn = m[1].replace(/['"]/g, "");
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = fn;
+          a.click();
+          URL.revokeObjectURL(a.href);
+          setOk("Download started: " + fn);
+        }
+
+        showBanner();
+
+        loadViz().then((viz) => {
+          if (viz) {
+            drawBase(viz);
+            setOk("Loaded " + viz.points.length + " presets.");
+          }
+        });
+
+        el("btn-match").addEventListener("click", doMatch);
+        el("btn-dl-best").addEventListener("click", () => {
+          const q = el("prompt").value.trim();
+          if (!q) {
+            setErr("Enter a prompt (or run Match first).");
+            return;
+          }
+          downloadExport({ query: q });
+        });
+        el("btn-dl-sel").addEventListener("click", () => {
+          if (!selectedId) return;
+          downloadExport({ preset_id: selectedId });
+        });
+      })();
+    </script>
+  </body>
+</html>

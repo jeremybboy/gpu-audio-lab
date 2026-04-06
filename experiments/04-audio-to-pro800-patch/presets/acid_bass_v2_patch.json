@@ -1,0 +1,24 @@
+{
+  "name": "acid_bass_v2",
+  "params_0_127": {
+    "osc1_level": 126,
+    "osc2_level": 64,
+    "noise_level": 2,
+    "osc_detune": 4,
+    "osc_mix_bias": 78,
+    "filter_cutoff": 78,
+    "filter_resonance": 118,
+    "filter_env_amount": 102,
+    "amp_attack": 2,
+    "amp_decay": 56,
+    "amp_sustain": 42,
+    "amp_release": 22,
+    "filter_attack": 2,
+    "filter_decay": 28,
+    "filter_sustain": 16,
+    "filter_release": 24,
+    "lfo_rate": 4,
+    "lfo_depth": 2,
+    "poly_mod_amount": 5
+  }
+}

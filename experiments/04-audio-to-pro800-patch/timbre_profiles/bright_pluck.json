@@ -1,0 +1,8 @@
+{
+  "name": "bright_pluck",
+  "spectral_centroid_mean": 4000.0,
+  "spectral_rolloff_mean": 8000.0,
+  "attack_time_s": 0.006,
+  "harmonic_to_noise_ratio": 26.0,
+  "vibrato_rate_hz": 0.0
+}

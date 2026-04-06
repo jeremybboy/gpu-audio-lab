@@ -1,0 +1,8 @@
+{
+  "name": "safe_audible",
+  "spectral_centroid_mean": 3200.0,
+  "spectral_rolloff_mean": 6500.0,
+  "attack_time_s": 0.012,
+  "harmonic_to_noise_ratio": 24.0,
+  "vibrato_rate_hz": 0.0
+}

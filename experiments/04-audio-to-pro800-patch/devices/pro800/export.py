@@ -68,6 +68,7 @@ def export_patch_syx(
     *,
     template_path: Path | None = None,
     preset_index: int | None = None,
+    syx_overlay: str = "blend_max",
 ) -> Path:
     """Write `.syx`: real single-preset packet if *template_path* exists, else placeholder."""
     if template_path is not None and template_path.is_file():
@@ -76,7 +77,9 @@ def export_patch_syx(
             if preset_index is not None
             else read_template_preset_index(template_path)
         )
-        path.write_bytes(build_single_preset_syx(patch, template_path, idx))
+        path.write_bytes(
+            build_single_preset_syx(patch, template_path, idx, overlay=syx_overlay)
+        )
         return path
     return export_patch_syx_placeholder(patch, path)
 

@@ -11,6 +11,23 @@ class Pro800Patch:
     def to_dict(self) -> dict:
         return {"name": self.name, "params_0_127": dict(self.params_0_127)}
 
+    @classmethod
+    def from_export_dict(cls, data: dict) -> Pro800Patch:
+        """Load from `export_patch_json` / `generate` output (name + params_0_127).
+
+        Merges onto patch_baseline so omitted keys keep safe defaults; values clamped 0..127.
+        Unknown keys are kept so future encoder fields can round-trip.
+        """
+        name = str(data.get("name", "patch"))
+        base = patch_baseline(name=name)
+        incoming = data.get("params_0_127")
+        if not isinstance(incoming, dict):
+            return base
+        merged = dict(base.params_0_127)
+        for k, v in incoming.items():
+            merged[str(k)] = max(0, min(127, int(v)))
+        return cls(name=name, params_0_127=merged)
+
 
 def patch_baseline(name: str = "Init") -> Pro800Patch:
     # Conservative baseline values; replace with validated defaults once

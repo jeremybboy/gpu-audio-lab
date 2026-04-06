@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "audibility_note": "Recipes are conservative morphs from a known-loud template (see recommended_template). Use syx_overlay patch_only so resonance/cutoff can move down as well as up. If silent: verify --syx-template path, use patch_only, and avoid zeroing osc/sustain/cutoff in recipe JSON.",
+  "intents": {
+    "electric_piano": {
+      "aliases": [
+        "electric piano",
+        "e piano",
+        "epiano",
+        "e-piano",
+        "rhodes",
+        "tines"
+      ],
+      "patch_file": "presets/epiano_from_solid_bass_patch.json",
+      "syx_overlay": "patch_only",
+      "recommended_template": "presets/28 solid bass.syx",
+      "notes": "Small deviation set from 28 solid bass; keeps unmapped SysEx bytes (waves, osc freq, etc.) from the template. Do not replace with random full patches or zero-valued params without hardware check."
+    },
+    "bass_basic": {
+      "aliases": [
+        "bass basic",
+        "basic bass",
+        "simple bass",
+        "bass"
+      ],
+      "patch_file": "presets/bass_basic_patch.json",
+      "syx_overlay": "patch_only",
+      "recommended_template": "presets/28 solid bass.syx",
+      "notes": "Darker cutoff, moderate resonance, longer amp decay/sustain for a simple bass line. Morph from 28 solid bass template only."
+    },
+    "electric_guitar": {
+      "aliases": [
+        "electric guitar",
+        "e guitar",
+        "electric guit",
+        "guitar",
+        "lead guitar",
+        "strat"
+      ],
+      "patch_file": "presets/electric_guitar_patch.json",
+      "syx_overlay": "patch_only",
+      "recommended_template": "presets/28 solid bass.syx",
+      "notes": "Plucky amp, brighter cutoff, filter env for pick attack; conservative morph from 28 solid bass. Real guitar timbre needs template waves/pitch on hardware."
+    },
+    "juno_type": {
+      "aliases": [
+        "juno",
+        "juno type",
+        "juno-type",
+        "juno 106",
+        "juno-106",
+        "juno 60",
+        "roland juno"
+      ],
+      "patch_file": "presets/juno_type_patch.json",
+      "syx_overlay": "patch_only",
+      "recommended_template": "presets/28 solid bass.syx",
+      "notes": "Pad-leaning Juno-ish: warm open filter, moderate Q, detuned oscs, gentle LFO. Chorus/sub/wave shapes still come from the template; not a 1:1 Juno clone."
+    },
+    "acid_bass": {
+      "aliases": [
+        "acid bass",
+        "acid",
+        "303 bass",
+        "tb-303",
+        "tb 303",
+        "303"
+      ],
+      "patch_file": "presets/acid_bass_patch.json",
+      "syx_overlay": "patch_only",
+      "recommended_template": "presets/28 solid bass.syx",
+      "notes": "High resonance + strong filter env, snappy attacks, shorter filter decay for squelch. Use a saw (or square) mono bass template; open cutoff on the synth if it is too dark."
+    },
+    "acid_bass_v2": {
+      "aliases": [
+        "acid bass v2",
+        "acid v2",
+        "acid bass 2",
+        "303 v2"
+      ],
+      "patch_file": "presets/acid_bass_v2_patch.json",
+      "syx_overlay": "patch_only",
+      "recommended_template": "presets/28 solid bass.syx",
+      "notes": "V2: brighter base cutoff (78 vs v1), tighter filter decay/sustain for faster squelch, slightly lower amp sustain for pumpier lines, more osc1 bias. Still overlay-only: before export, save a template with Saw A (+ Saw B or square if you like), mono/unison off, glide as needed for slides; this JSON cannot set wave or unison bytes yet."
+    }
+  }
+}
