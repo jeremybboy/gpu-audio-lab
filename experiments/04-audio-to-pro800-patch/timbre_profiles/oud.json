@@ -1,0 +1,9 @@
+{
+  "name": "oud_reference",
+  "spectral_centroid_mean": 1400.0,
+  "spectral_rolloff_mean": 3200.0,
+  "attack_time_s": 0.025,
+  "harmonic_to_noise_ratio": 11.5,
+  "vibrato_rate_hz": 4.2
+}
+

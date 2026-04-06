@@ -29,6 +29,30 @@ requirements.txt     — single shared dependency list
 - Prefer Jupyter notebooks for interactive work — pre-execute with nbconvert when sharing.
 - CPU vs GPU comparisons should always include warmup runs and `torch.cuda.synchronize()`.
 
+## Active continuity note (Experiment 03)
+
+- Current experiment folder: `experiments/03-neural-vs-classical-recommendation/`.
+- Purpose: compare a small neural sequential recommender (SASRec-style) against classical baselines (ItemKNN, BPR-MF, FMC) on MovieLens-1M.
+- Run entrypoint: `experiments/03-neural-vs-classical-recommendation/run_benchmark.py`.
+- Current PR: `#3` ("Add neural vs classical recommendation benchmark experiment").
+- Keep dataset local only: do not commit `experiments/03-neural-vs-classical-recommendation/ml-1m/` or zip files.
+- Continue work by extending fair runs (multi-seed/multi-trial) and updating `results/` summaries and interpretation notes.
+
+## Active continuity note (Experiment 04)
+
+- Current experiment folder: `experiments/04-audio-to-pro800-patch/`.
+- Purpose: build a deterministic inverse-mapping pipeline from audio/timbre profile to PRO-800-compatible patch parameters.
+- Phase 1 priority: lock schema + API + mapping rules and ship JSON/CC/SysEx (real single-preset `.syx` when a SynthTribe template is provided; placeholder only if no template).
+- Run entrypoints:
+  - API: `experiments/04-audio-to-pro800-patch/app.py`
+  - CLI: `experiments/04-audio-to-pro800-patch/cli/main.py`
+- Keep architecture split:
+  - `audio -> timbre_features`
+  - `timbre_features -> abstract_subtractive_params`
+  - `abstract_subtractive_params -> pro800_patch`
+- **PRO-800 hardware check (goal 2 ear validation):** Template on disk: `experiments/04-audio-to-pro800-patch/presets/template_riser_preset_30.syx` (SynthTribe single-preset export). Generate `ear_test.syx` from a profile, then `send-syx` to USB MIDI. **Perceptual ground truth:** sound should change vs. the raw template (e.g. oud mapping ≠ riser).
+- **User preference:** Prefers **not** typing shell commands by hand for these steps. Use **VS Code/Cursor → Terminal → Run Task…** and pick the **“04 PRO-800:”** tasks (see `.vscode/tasks.json`), **or** ask the coding agent to run the same commands (user approves with **Run** / **OK** on the command prompt). Do not assume the user will copy-paste into a terminal unless they ask.
+
 ## Git & branching
 
 - **Never commit directly to `master`** — keep it in a clean, working state.

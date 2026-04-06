@@ -1,0 +1,58 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "04 PRO-800: export ear_test.syx (oud + riser template)",
+      "type": "shell",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": [
+        "experiments/04-audio-to-pro800-patch/cli/main.py",
+        "export",
+        "--profile",
+        "experiments/04-audio-to-pro800-patch/timbre_profiles/oud.json",
+        "--name",
+        "ear_test",
+        "--format",
+        "syx",
+        "--syx-template",
+        "experiments/04-audio-to-pro800-patch/presets/template_riser_preset_30.syx"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {}
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "04 PRO-800: send ear_test.syx to PRO-800 (USB MIDI)",
+      "type": "shell",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": [
+        "experiments/04-audio-to-pro800-patch/cli/main.py",
+        "send-syx",
+        "--file",
+        "experiments/04-audio-to-pro800-patch/presets/ear_test.syx",
+        "--output-name",
+        "PRO 800 1",
+        "--port-contains",
+        "PRO 800"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
