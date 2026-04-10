@@ -1,0 +1,21 @@
+{
+  "pair_id": "pair_10",
+  "bank_stem": "Warm Pad.syx",
+  "created_utc": "2026-04-10T06:52:12.446593+00:00",
+  "protocol_version": "paired_v1",
+  "midi_channel_1_based": 1,
+  "midi_note": 60,
+  "velocity": 100,
+  "sample_rate_hz": 48000,
+  "load_method": "synthtribe_or_send_syx",
+  "gain_notes": "Signal chain: Behringer PRO-800 \u2192 Mackie 1402 VLZ \u2192 Steinberg UR22 (USB) \u2192 Windows \u2192 Audacity. Recorded mono 48 kHz. Gain staged nominally ~0 dB (no intentional boost); trim as set on mixer/interface for clean level without clipping.",
+  "firmware": "TBD",
+  "render_placeholder": false,
+  "notes": "Merged from New folder; run trim_renders.py then set gain_notes/firmware.",
+  "staging_stem": "Warm Pad",
+  "trim_applied": true,
+  "trim_pre_roll_ms": 15.0,
+  "trim_start_sample": 304,
+  "trim_old_length_samples": 122044,
+  "trim_new_length_samples": 121740
+}
