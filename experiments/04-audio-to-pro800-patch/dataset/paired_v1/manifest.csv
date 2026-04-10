@@ -1,0 +1,11 @@
+pair_id,bank_stem,wav_path,syx_path,sample_rate,note,velocity,gain_notes,firmware
+pair_01,Daft Sync.syx,pair_01/render.wav,pair_01/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_02,deepmine.syx,pair_02/render.wav,pair_02/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_03,Fat FM.syx,pair_03/render.wav,pair_03/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_04,Glide Bass.syx,pair_04/render.wav,pair_04/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_05,Glide Chord.syx,pair_05/render.wav,pair_05/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_06,Nice Bass.syx,pair_06/render.wav,pair_06/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_07,Old Skool.syx,pair_07/render.wav,pair_07/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_08,Pong.syx,pair_08/render.wav,pair_08/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_09,Uni Lead.syx,pair_09/render.wav,pair_09/source.syx,48000,60,100,REPLACE after calibration,TBD
+pair_10,Warm Pad.syx,pair_10/render.wav,pair_10/source.syx,48000,60,100,REPLACE after calibration,TBD

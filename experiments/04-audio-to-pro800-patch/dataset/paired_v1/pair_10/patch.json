@@ -1,0 +1,24 @@
+{
+  "name": "pair_10",
+  "params_0_127": {
+    "osc1_level": 96,
+    "osc2_level": 74,
+    "noise_level": 0,
+    "osc_detune": 0,
+    "osc_mix_bias": 64,
+    "filter_cutoff": 76,
+    "filter_resonance": 11,
+    "filter_env_amount": 64,
+    "amp_attack": 0,
+    "amp_decay": 0,
+    "amp_sustain": 127,
+    "amp_release": 81,
+    "filter_attack": 0,
+    "filter_decay": 59,
+    "filter_sustain": 49,
+    "filter_release": 68,
+    "lfo_rate": 0,
+    "lfo_depth": 0,
+    "poly_mod_amount": 14
+  }
+}
