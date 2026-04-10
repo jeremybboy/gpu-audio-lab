@@ -11,7 +11,7 @@
   "gain_notes": "Signal chain: Behringer PRO-800 \u2192 Mackie 1402 VLZ \u2192 Steinberg UR22 (USB) \u2192 Windows \u2192 Audacity. Recorded mono 48 kHz. Gain staged nominally ~0 dB (no intentional boost); trim as set on mixer/interface for clean level without clipping.",
   "firmware": "TBD",
   "render_placeholder": false,
-  "notes": "Merged from New folder; run trim_renders.py then set gain_notes/firmware.",
+  "notes": "Held ~1 s on C4, natural release. (Merged from staging; trim applied.)",
   "staging_stem": "deepmine",
   "trim_applied": true,
   "trim_pre_roll_ms": 15.0,

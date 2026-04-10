@@ -12,6 +12,14 @@ Phase 1 explored deterministic timbre → patch mapping; **paired_v1** adds **gr
 - **C:** Run Phase 1 analyze/map on each `render.wav` and compare to `patch.json` (pipeline sanity).
 - **D:** More pairs (and optional MIDI 48 re-capture) before serious audio→parameter learning.
 
+### Exploratory B (implemented)
+
+`tools/explore_audio_vs_knobs.py` computes **librosa** summaries per `render.wav` (mean centroid, rolloff, ZCR, RMS, plus a rough “peak in first 200 ms” time) and plots them against **`patch.json`** fields `filter_cutoff`, `filter_resonance`, `filter_env_amount`, `amp_attack`, `noise_level`. It writes PNGs to **`results/`** — useful for GitHub and quick scans. **These are not statistical claims:** with **N=10**, treat plots as **hypothesis prompts** before step **C** or more data (**D**).
+
+```bash
+python dataset/paired_v1/tools/explore_audio_vs_knobs.py
+```
+
 ---
 
 **Purpose:** One folder per preset: exact bank `source.syx` + `render.wav` (hardware line/USB) + `meta.json` + decoded `patch.json` for ML / plots.
@@ -33,6 +41,8 @@ python dataset/paired_v1/tools/render_mel_grid.py
 | PRO-800 mode | As you normally use (poly/unison) — **log in each `meta.json` if it changes** |
 | Sample rate | **48000 Hz**, **24-bit** WAV mono or stereo (match DAW export) |
 | Input gain | **Fixed** for all 10 — describe knob position or interface setting in `meta.json` |
+
+*Actual v1 capture: held ~1 s on C4 (MIDI 60), natural release — mirrored in each `meta.json` `notes`.*
 
 ### v2 re-capture (recommended)
 
