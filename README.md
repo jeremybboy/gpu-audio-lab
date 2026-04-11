@@ -46,6 +46,79 @@ pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu124
 python -m ipykernel install --user --name gpu-audio-lab --display-name "Python 3.11 (gpu-audio-lab)"
 ```
 
+## Raspberry Pi (remote CPU lab)
+
+Use a Raspberry Pi as a **small, always-on CPU target** for scripts, lighter benchmarks, and experiments that do not need CUDA. You edit and run code **on the Pi** while driving the session from your desktop with **SSH + Cursor**.
+
+### Why this repo on a Pi
+
+- **CPU-only PyTorch** and the same Python layout as your workstation (`venv`, `requirements.txt`).
+- Good for **long-running or headless** jobs, GPIO-adjacent glue, or validating that something runs without a GPU.
+- **CUDA-specific** experiment configs (for example `experiments/01-cpu-vs-gpu` GPU paths) will not apply; prefer CPU code paths or smaller problem sizes.
+
+### One-time on the Raspberry Pi
+
+1. Install **Raspberry Pi OS** (64-bit recommended on Pi 4 / Pi 5).
+2. Enable **SSH** (e.g. `sudo raspi-config` → Interface Options → SSH, or imaging tool toggle).
+3. Note the Pi’s **hostname** (default `raspberrypi`) or set a fixed name, and its **LAN IP** (router DHCP reservation helps).
+
+### One-time on your desktop (SSH)
+
+Add a host block in `~/.ssh/config` (adjust `Host`, `HostName`, and `User`):
+
+```ssh-config
+Host pi-gpu-audio-lab
+    HostName 192.168.1.50
+    User uzan
+    # Optional: reuse one key
+    # IdentityFile ~/.ssh/id_ed25519
+```
+
+Test: `ssh pi-gpu-audio-lab`.
+
+### Cursor: open the repo on the Pi
+
+1. Install the **Remote - SSH** extension in Cursor (same idea as VS Code).
+2. **Remote-SSH: Connect to Host…** → pick `pi-gpu-audio-lab` (or your host alias).
+3. **File → Open Folder** on the Pi, e.g. `/home/uzan/gpu-audio-lab` after you clone there.
+
+The integrated terminal and agent run **on the Pi**; paths and binaries are the Pi’s, not your PC’s.
+
+### Clone and Python env on the Pi
+
+```bash
+cd ~
+git clone https://github.com/jeremybboy/gpu-audio-lab.git
+cd gpu-audio-lab
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+pip install -U pip
+pip install -r requirements.txt
+```
+
+Install **CPU** PyTorch from the default index (do **not** use the CUDA wheel index from the [Setup](#setup) section on the Pi):
+
+```bash
+pip install --upgrade torch torchaudio
+```
+
+Register a kernel (optional, for notebooks):
+
+```bash
+python -m ipykernel install --user --name gpu-audio-lab-pi --display-name "Python (gpu-audio-lab, Pi CPU)"
+```
+
+### Quick sanity check
+
+```bash
+source .venv/bin/activate
+python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+```
+
+You should see a PyTorch version and `False` for CUDA on the Pi.
+
 ## Environment
 
 - Python 3.11.8
