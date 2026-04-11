@@ -13,6 +13,7 @@ Topics covered here include **PyTorch + CUDA** audio workloads, **classical vs n
 | 03 | `experiments/03-neural-vs-classical-recommendation/` | MovieLens-1M: SASRec-style neural recommender vs ItemKNN, BPR-MF, FMC |
 | 03-fair | `experiments/03-fair-sasrec-vs-classical/` | Extended fair runs and metrics for neural vs classical recommendation |
 | 04 | `experiments/04-audio-to-pro800-patch/` | **Timbre / audio → abstract patch → Behringer PRO-800** (JSON, MIDI CC, template-based `.syx`, text intents, local web UI). Repo **`docs/`** holds a static UI for **GitHub Pages** (preview); full export needs **`python app.py`**. See experiment README. |
+| 05 | `experiments/05-raspberriPITests/` | Raspberry Pi — USB live BPM + OLED (`bpm_oled_autocorrel_fast.py`). Copy lives here for **Cursor Remote SSH**; canonical repo **[Raspberri_Pi_Audio](https://github.com/jeremybboy/Raspberri_Pi_Audio)**. Index: **[`experiments/README.md`](experiments/README.md)**. |
 
 ## Highlights from 01-cpu-vs-gpu
 

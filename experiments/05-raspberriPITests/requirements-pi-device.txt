@@ -1,0 +1,5 @@
+# Raspberry Pi device stack (USB audio + OLED). Install on the Pi only.
+numpy>=1.24.0
+sounddevice>=0.4.6
+luma.oled>=3.12.0
+pillow>=10.0.0
