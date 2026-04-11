@@ -60,10 +60,26 @@ requirements.txt     — single shared dependency list
   `git checkout -b experiment/NN-name` (e.g. `experiment/02-placeholder`).
 - Commit early and often on the feature branch with concise messages.
 - When the work is ready, push the branch and open a PR to merge into `master`.
-- Always push after committing — local-only commits are easy to forget.
 - Commit message format: imperative mood, short summary (≤ 72 chars).
   Example: `Add mel spectrogram benchmark notebook`.
 - Do **not** commit secrets, large binary files, or `.venv/`.
+
+### Pre-push: notify and wait for validation (required)
+
+The maintainer wants a **visible hand-off before anything reaches GitHub**, so they can open GitHub and validate changes.
+
+1. **Do not run `git push` silently** or immediately after `git commit`.
+2. After committing locally, **send a chat message** (this is the notification) that includes:
+   - Branch name and remote (e.g. `origin` / `experiment/…`)
+   - **Commit subject** and hash (`git log -1 --oneline`)
+   - **What changed** — at minimum `git show --stat` (or an equivalent file list + short summary)
+3. **Stop and wait** for explicit approval in the thread (e.g. “OK to push”, “validated”, “push it”) **before** running `git push`.
+4. **So they can review in the browser:** prefer the first push to be a **feature branch** (not `master`). After they approve and you push, give them a direct link, for example:
+   - Compare against `master`: `https://github.com/jeremybboy/gpu-audio-lab/compare/master...<branch>?expand=1`
+   - Or open a PR from that branch, then share the PR URL for review before merging to `master`.
+5. **Merging to `master`** (or pushing straight to `master` if they ever ask for an exception) should only happen **after** they have validated on GitHub (or explicitly waived review in chat).
+
+Note: Cursor does not send phone/desktop push notifications by itself; the **agent message in this chat** is the reminder to open GitHub and check the diff or PR.
 
 ## Code style
 
